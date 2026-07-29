@@ -1,0 +1,30 @@
+{
+  "name": "open-note-mobile",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tiptap/extension-link": "^3.29.1",
+    "@tiptap/extension-placeholder": "^3.29.1",
+    "@tiptap/extension-underline": "^3.29.1",
+    "@tiptap/starter-kit": "^3.29.1",
+    "@tiptap/vue-3": "^3.29.1",
+    "axios": "^1.6.0",
+    "bootstrap-icons": "^1.13.1",
+    "dayjs": "^1.11.0",
+    "marked": "^12.0.2",
+    "pinia": "^2.1.0",
+    "turndown": "^7.2.4",
+    "vue": "^3.4.0",
+    "vue-router": "^4.3.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.0",
+    "vite": "^5.0.0"
+  }
+}
