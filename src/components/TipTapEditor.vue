@@ -1,6 +1,6 @@
 <template>
   <div class="tt-editor">
-    <div class="tt-toolbar">
+    <div v-if="editor" class="tt-toolbar">
       <button class="tt-btn" :class="{ active: editor.isActive('bold') }" @click="editor.chain().focus().toggleBold().run()" title="Bold"><b>B</b></button>
       <button class="tt-btn" :class="{ active: editor.isActive('italic') }" @click="editor.chain().focus().toggleItalic().run()" title="Italic"><i>I</i></button>
       <button class="tt-btn" :class="{ active: editor.isActive('underline') }" @click="editor.chain().focus().toggleUnderline().run()" title="Underline"><u>U</u></button>
