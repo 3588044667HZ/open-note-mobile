@@ -1,0 +1,120 @@
+:root {
+  --skin-content-bg: #FFFFFF;
+  --skin-text-color: #1A1A1A;
+  --skin-title-color: #000000;
+  --skin-time-color: #999999;
+  --skin-card-bg: #FFFFFF;
+  --skin-backcloth: #FAFAFA;
+  --skin-border-color: #0000001F;
+  --skin-table-border: #0000001F;
+  --skin-scrollbar-bg: #00000029;
+}
+
+[data-skin="yellow"] {
+  --skin-content-bg: #FEF7E2;
+  --skin-text-color: #96826C;
+  --skin-title-color: #96826C;
+  --skin-time-color: #5F4A33;
+  --skin-card-bg: #FBF7E8;
+  --skin-backcloth: #EFE8D4;
+  --skin-border-color: #5F4A3322;
+}
+
+[data-skin="cyan"] {
+  --skin-content-bg: #EFF7F0;
+  --skin-text-color: #747D76;
+  --skin-title-color: #747D76;
+  --skin-time-color: #515D54;
+  --skin-card-bg: #EDF5EE;
+  --skin-backcloth: #E1E8E2;
+}
+
+[data-skin="blue"] {
+  --skin-content-bg: #EAF4F3;
+  --skin-text-color: #607474;
+  --skin-title-color: #607474;
+  --skin-time-color: #3B5050;
+  --skin-card-bg: #EEF3F3;
+  --skin-backcloth: #DCE5E4;
+}
+
+[data-skin="green"] {
+  --skin-content-bg: #EAF3F8;
+  --skin-text-color: #5A656C;
+  --skin-title-color: #5A656C;
+  --skin-time-color: #4E5960;
+  --skin-card-bg: #EBF2F6;
+  --skin-backcloth: #DCE4E9;
+}
+
+[data-skin="red"] {
+  --skin-content-bg: #F8F1E9;
+  --skin-text-color: #9F7660;
+  --skin-title-color: #9F7660;
+  --skin-time-color: #795C4C;
+  --skin-card-bg: #F4EFEA;
+  --skin-backcloth: #E9E3DB;
+}
+
+[data-skin="grey"] {
+  --skin-content-bg: #F4F4F4;
+  --skin-text-color: #5F5F5F;
+  --skin-title-color: #5F5F5F;
+  --skin-time-color: #474747;
+  --skin-card-bg: #F2F2F2;
+  --skin-backcloth: #E5E5E5;
+}
+
+[data-skin="black"] {
+  --skin-content-bg: #000000;
+  --skin-text-color: #FFFFFF;
+  --skin-title-color: #FFFFFF;
+  --skin-time-color: #8CFFFFFF;
+  --skin-card-bg: #1B1B1B;
+  --skin-backcloth: #2E2E2E;
+  --skin-border-color: #FFFFFF33;
+  --skin-scrollbar-bg: #FFFFFF40;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-skin="white"] {
+    --skin-content-bg: #000000;
+    --skin-text-color: #FFFFFF;
+    --skin-title-color: #FFFFFF;
+    --skin-time-color: #8CFFFFFF;
+    --skin-card-bg: #1B1B1B;
+    --skin-backcloth: #2E2E2E;
+    --skin-border-color: #FFFFFF33;
+  }
+}
+
+.skin-picker-panel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.skin-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.skin-dot:active {
+  transform: scale(1.15);
+}
+
+.skin-dot.active {
+  border-color: var(--color-text);
+  transform: scale(1.15);
+}
+
+@media (prefers-color-scheme: dark) {
+  .skin-dot.active {
+    border-color: #fff;
+  }
+}

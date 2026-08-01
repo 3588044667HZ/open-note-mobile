@@ -1,5 +1,5 @@
 <template>
-  <div class="page main-layout">
+  <div class="page main-layout" :style="{ backgroundColor: skinCloth }">
     <div class="layout-body">
       <router-view />
     </div>
@@ -41,9 +41,16 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useSkin } from '../composables/useSkin'
+
 const router = useRouter()
 const route = useRoute()
+const { currentSkin, SKINS } = useSkin()
+
+const skinCloth = computed(() => SKINS[currentSkin.value] || '#FAFAFA')
+
 function isActive(path) {
   return route.path === path || route.path.startsWith(path + '/')
 }
@@ -51,7 +58,8 @@ function isActive(path) {
 
 <style scoped>
 .main-layout {
-  background: var(--color-bg);
+  background: var(--skin-backcloth);
+  transition: background-color 0.4s ease;
 }
 
 .layout-body {
