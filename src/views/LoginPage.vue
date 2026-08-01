@@ -104,7 +104,7 @@ async function handleSubmit() {
 .login-logo h1 {
   font-size: 24px;
   font-weight: 700;
-  color: #000;
+  color: var(--color-text);
 }
 
 .login-subtitle {
@@ -146,12 +146,12 @@ async function handleSubmit() {
 .input-group input {
   width: 100%;
   height: 48px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 0 14px 0 42px;
   font-size: 16px;
   background: var(--color-card);
-  color: #000;
+  color: var(--color-text);
 }
 
 .input-group input:focus {
@@ -160,7 +160,7 @@ async function handleSubmit() {
 }
 
 .input-group input::placeholder {
-  color: rgba(0, 0, 0, 0.25);
+  color: var(--color-text-tertiary);
 }
 
 .submit-btn {

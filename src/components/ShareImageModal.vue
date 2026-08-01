@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <Teleport to="body">
     <div v-if="visible" class="share-modal-overlay" @click.self="close">
       <div class="share-modal">
@@ -101,15 +101,14 @@ async function handleShare() {
 .sm-title {
   font-size: 16px;
   font-weight: 600;
-  color: #000;
+  color: var(--color-text);
 }
-
 .sm-close {
   width: 28px;
   height: 28px;
   border-radius: 8px;
   font-size: 18px;
-  color: rgba(0, 0, 0, 0.35);
+  color: var(--color-icon);
   display: flex;
   align-items: center;
   justify-content: center;

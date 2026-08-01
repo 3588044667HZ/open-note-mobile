@@ -74,6 +74,14 @@
   --skin-backcloth: #2E2E2E;
   --skin-border-color: #FFFFFF33;
   --skin-scrollbar-bg: #FFFFFF40;
+  --color-bg: #1C1C1E;
+  --color-card: #2C2C2E;
+  --color-white: #1C1C1E;
+  --color-text: rgba(255, 255, 255, 0.85);
+  --color-text-secondary: rgba(255, 255, 255, 0.45);
+  --color-text-tertiary: rgba(255, 255, 255, 0.25);
+  --color-icon: rgba(255, 255, 255, 0.35);
+  --color-border: rgba(255, 255, 255, 0.08);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -85,6 +93,14 @@
     --skin-card-bg: #1B1B1B;
     --skin-backcloth: #2E2E2E;
     --skin-border-color: #FFFFFF33;
+    --color-bg: #1C1C1E;
+    --color-card: #2C2C2E;
+    --color-white: #1C1C1E;
+    --color-text: rgba(255, 255, 255, 0.85);
+    --color-text-secondary: rgba(255, 255, 255, 0.45);
+    --color-text-tertiary: rgba(255, 255, 255, 0.25);
+    --color-icon: rgba(255, 255, 255, 0.35);
+    --color-border: rgba(255, 255, 255, 0.08);
   }
 }
 

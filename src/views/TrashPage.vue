@@ -116,7 +116,7 @@ async function handlePermanentDelete(id) {
 .trash-item-title {
   font-size: 15px;
   font-weight: 700;
-  color: #000;
+  color: var(--color-text);
 }
 
 .trash-item-content {

@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="note-list-page">
     <div class="list-header">
       <div class="header-left">
@@ -18,8 +18,8 @@
 
     <div class="search-bar" @click="showSearch = true">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <circle cx="7" cy="7" r="5.5" stroke="rgba(0,0,0,0.35)" stroke-width="1.2"/>
-        <line x1="11" y1="11" x2="14.5" y2="14.5" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" stroke-linecap="round"/>
+        <circle cx="7" cy="7" r="5.5" stroke="var(--color-icon)" stroke-width="1.2"/>
+        <line x1="11" y1="11" x2="14.5" y2="14.5" stroke="var(--color-icon)" stroke-width="1.2" stroke-linecap="round"/>
       </svg>
       <span>Search notes...</span>
     </div>
@@ -27,8 +27,8 @@
     <div v-if="showSearch" class="search-overlay">
       <div class="search-header">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <circle cx="7" cy="7" r="5.5" stroke="rgba(0,0,0,0.35)" stroke-width="1.2"/>
-          <line x1="11" y1="11" x2="14.5" y2="14.5" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" stroke-linecap="round"/>
+          <circle cx="7" cy="7" r="5.5" stroke="var(--color-icon)" stroke-width="1.2"/>
+          <line x1="11" y1="11" x2="14.5" y2="14.5" stroke="var(--color-icon)" stroke-width="1.2" stroke-linecap="round"/>
         </svg>
         <input v-model="store.searchKeyword" ref="searchInputRef" type="text" placeholder="Search notes..." class="search-input" />
         <button class="cancel-btn" @click="closeSearch">Cancel</button>
@@ -53,10 +53,10 @@
 
     <div v-else-if="store.filteredNotes.length === 0" class="empty-state">
       <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-        <rect x="7" y="6" width="34" height="36" rx="4" stroke="rgba(0,0,0,0.08)" stroke-width="1.5"/>
-        <line x1="15" y1="18" x2="33" y2="18" stroke="rgba(0,0,0,0.08)" stroke-width="1.5" stroke-linecap="round"/>
-        <line x1="15" y1="25" x2="33" y2="25" stroke="rgba(0,0,0,0.08)" stroke-width="1.5" stroke-linecap="round"/>
-        <line x1="15" y1="32" x2="24" y2="32" stroke="rgba(0,0,0,0.08)" stroke-width="1.5" stroke-linecap="round"/>
+        <rect x="7" y="6" width="34" height="36" rx="4" stroke="var(--color-border)" stroke-width="1.5"/>
+        <line x1="15" y1="18" x2="33" y2="18" stroke="var(--color-border)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="15" y1="25" x2="33" y2="25" stroke="var(--color-border)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="15" y1="32" x2="24" y2="32" stroke="var(--color-border)" stroke-width="1.5" stroke-linecap="round"/>
       </svg>
       <span class="empty-text">No notes yet</span>
       <span class="empty-hint">Tap + to create your first note</span>
@@ -174,7 +174,7 @@ onMounted(async () => {
 .app-name {
   font-size: 20px;
   font-weight: 700;
-  color: #000;
+  color: var(--color-text);
 }
 
 .note-count {
@@ -190,7 +190,7 @@ onMounted(async () => {
   border-radius: 10px;
   padding: 10px 14px;
   margin-bottom: 10px;
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--color-text-tertiary);
   font-size: 15px;
   cursor: pointer;
 }
@@ -215,12 +215,12 @@ onMounted(async () => {
   height: 36px;
   border: none;
   font-size: 16px;
-  color: #000;
+  color: var(--color-text);
   background: transparent;
 }
 
 .search-input::placeholder {
-  color: rgba(0, 0, 0, 0.25);
+  color: var(--color-text-tertiary);
 }
 
 .cancel-btn {
@@ -238,7 +238,7 @@ onMounted(async () => {
 
 .filter-select, .filter-select-sm {
   height: 32px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 0 10px;
   font-size: 13px;
@@ -261,12 +261,12 @@ onMounted(async () => {
 .empty-text {
   font-size: 17px;
   font-weight: 600;
-  color: rgba(0, 0, 0, 0.25);
+  color: var(--color-text-tertiary);
 }
 
 .empty-hint {
   font-size: 14px;
-  color: rgba(0, 0, 0, 0.2);
+  color: var(--color-text-tertiary);
 }
 
 .loading-spinner {
@@ -318,7 +318,7 @@ onMounted(async () => {
 .card-title {
   font-size: 16px;
   font-weight: 700;
-  color: #000;
+  color: var(--color-text);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

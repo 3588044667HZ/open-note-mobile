@@ -11,6 +11,37 @@
 
     <div class="page-body" style="padding: 16px;">
       <div class="settings-section">
+        <div class="section-title">Appearance</div>
+        <div class="settings-card">
+          <div class="setting-row">
+            <div class="setting-icon">
+              <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
+                <path v-if="currentSkin === 'black'" d="M8 1a7 7 0 000 14A5 5 0 018 1z" fill="rgba(0,0,0,0.55)"/>
+                <path v-else d="M13.5 8.5A5 5 0 017.5 2.5a5 5 0 106 6z" stroke="rgba(0,0,0,0.45)" stroke-width="1.3" stroke-linecap="round"/>
+                <circle v-if="currentSkin === 'black'" cx="8" cy="8" r="2" fill="#FFD700"/>
+              </svg>
+            </div>
+            <span class="setting-label">Dark Mode</span>
+            <button class="toggle-switch" :class="{ active: currentSkin === 'black' }" @click="handleToggleDark">
+              <span class="toggle-knob"></span>
+            </button>
+          </div>
+          <div class="setting-row">
+            <div class="setting-icon">
+              <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
+                <circle cx="8" cy="8" r="3" :stroke="currentSkin === 'yellow' ? '#96826C' : 'rgba(0,0,0,0.45)'" stroke-width="1.3"/>
+                <path d="M2 8s2.5-4 6-4 6 4 6 4-2.5 4-6 4-6-4-6-4z" :stroke="currentSkin === 'yellow' ? '#96826C' : 'rgba(0,0,0,0.45)'" stroke-width="1.3"/>
+              </svg>
+            </div>
+            <span class="setting-label">Eye Protection</span>
+            <button class="toggle-switch" :class="{ active: currentSkin === 'yellow' }" @click="toggleEyeProtection">
+              <span class="toggle-knob"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
         <div class="section-title">Account</div>
         <div class="settings-card">
           <div class="setting-row">
@@ -67,11 +98,13 @@ import { ref, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { useNoteStore } from '../stores/note'
+import { useSkin } from '../composables/useSkin'
 import dayjs from 'dayjs'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const store = useNoteStore()
+const { currentSkin, toggleEyeProtection, toggleDarkMode } = useSkin()
 const showAddNB = ref(false)
 const newNBName = ref('')
 const nbInputRef = ref(null)
@@ -79,6 +112,10 @@ const nbInputRef = ref(null)
 function formatDate(d) {
   if (!d) return '---'
   return dayjs(d).format('YYYY/MM/DD')
+}
+
+function handleToggleDark() {
+  toggleDarkMode()
 }
 
 async function handleAddNotebook() {
@@ -132,8 +169,47 @@ async function handleLogout() {
 
 .setting-label {
   font-size: 15px;
-  color: #000;
+  color: var(--color-text);
   flex: 1;
+}
+
+.setting-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.toggle-switch {
+  width: 44px;
+  height: 26px;
+  border-radius: 13px;
+  background: rgba(0, 0, 0, 0.12);
+  position: relative;
+  transition: background 0.25s ease;
+  flex-shrink: 0;
+}
+
+.toggle-switch.active {
+  background: var(--color-primary);
+}
+
+.toggle-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 0.25s ease;
+}
+
+.toggle-switch.active .toggle-knob {
+  transform: translateX(18px);
 }
 
 .setting-value {

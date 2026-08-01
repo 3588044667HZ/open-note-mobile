@@ -141,7 +141,7 @@ onBeforeUnmount(() => {
   border-radius: 5px;
   font-size: 12px;
   font-weight: 600;
-  color: rgba(0, 0, 0, 0.45);
+  color: var(--type-toolbar-color);
   background: transparent;
   display: flex;
   align-items: center;
@@ -158,7 +158,7 @@ onBeforeUnmount(() => {
 .tt-spacer {
   width: 1px;
   height: 16px;
-  background: rgba(0, 0, 0, 0.08);
+  background: var(--type-toolbar-divider);
   margin: 0 3px;
   flex-shrink: 0;
 }
@@ -180,22 +180,25 @@ onBeforeUnmount(() => {
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 16px;
+  padding: 0 var(--type-padding-horizontal);
 }
 
 :deep(.tt-content) {
-  padding: 16px;
-  font-size: 15px;
-  line-height: 1.7;
-  color: var(--color-text);
+  padding: 0 var(--type-padding-horizontal);
+  font-family: var(--type-font-family);
+  font-size: var(--type-content-size);
+  line-height: var(--type-content-line-height);
+  letter-spacing: var(--type-letter-spacing);
+  color: var(--type-text-color);
   outline: none;
   min-height: 100%;
 }
 
-:deep(.tt-content h1) { font-size: 1.5em; font-weight: 700; margin: 0.5em 0 0.2em; line-height: 1.3; }
-:deep(.tt-content h2) { font-size: 1.3em; font-weight: 700; margin: 0.5em 0 0.2em; line-height: 1.3; }
-:deep(.tt-content h3) { font-size: 1.15em; font-weight: 700; margin: 0.4em 0 0.2em; line-height: 1.3; }
-:deep(.tt-content p) { margin: 0.3em 0; }
+:deep(.tt-content h1) { font-size: 1.5em; font-weight: var(--type-font-bold); margin: 0.5em 0 0.2em; line-height: var(--type-title-line-height); }
+:deep(.tt-content h2) { font-size: 1.3em; font-weight: var(--type-font-bold); margin: 0.5em 0 0.2em; line-height: var(--type-title-line-height); }
+:deep(.tt-content h3) { font-size: 1.15em; font-weight: var(--type-font-bold); margin: 0.4em 0 0.2em; line-height: var(--type-title-line-height); }
+:deep(.tt-content p) { margin: 0; }
+:deep(.tt-content b), :deep(.tt-content strong) { font-weight: var(--type-font-bold); }
 :deep(.tt-content ul) { padding-left: 1.5em; margin: 0.2em 0; }
 :deep(.tt-content ol) { padding-left: 1.5em; margin: 0.2em 0; }
 :deep(.tt-content li) { margin: 0.1em 0; }
@@ -203,42 +206,44 @@ onBeforeUnmount(() => {
   border-left: 3px solid var(--color-primary);
   padding: 0.1em 0.8em;
   margin: 0.4em 0;
-  color: rgba(0,0,0,0.55);
-  background: rgba(0,106,255,0.03);
+  color: var(--type-blockquote-color);
+  background: var(--type-blockquote-bg);
   border-radius: 0 4px 4px 0;
 }
-:deep(.tt-content code) { background: rgba(0,0,0,0.05); padding: 0.15em 0.35em; border-radius: 3px; font-size: 0.88em; font-family: 'SF Mono', 'Consolas', monospace; }
-:deep(.tt-content pre) { background: rgba(0,0,0,0.03); padding: 12px 14px; border-radius: 8px; overflow-x: auto; margin: 0.4em 0; }
+:deep(.tt-content code) { background: var(--type-code-bg); padding: 0.15em 0.35em; border-radius: 3px; font-size: 0.88em; font-family: 'SF Mono', 'Consolas', monospace; }
+:deep(.tt-content pre) { background: var(--type-pre-bg); padding: 12px 14px; border-radius: 8px; overflow-x: auto; margin: 0.4em 0; }
 :deep(.tt-content pre code) { background: none; padding: 0; }
-:deep(.tt-content hr) { border: none; border-top: 1px solid rgba(0,0,0,0.08); margin: 1em 0; }
+:deep(.tt-content hr) { border: none; border-top: 1px solid var(--type-hr-color); margin: 1em 0; }
 :deep(.tt-content a.editor-link) { color: var(--color-primary); }
 
 :deep(.tt-content p.is-editor-empty:first-child::before) {
   content: attr(data-placeholder);
   float: left;
-  color: rgba(0, 0, 0, 0.2);
+  color: var(--type-placeholder-color);
   pointer-events: none;
   height: 0;
 }
 
 .markdown-content {
-  color: var(--color-text);
-  font-size: 16px;
-  line-height: 1.75;
+  color: var(--type-text-color);
+  font-family: var(--type-font-family);
+  font-size: var(--type-content-size);
+  line-height: var(--type-content-line-height);
+  letter-spacing: var(--type-letter-spacing);
   word-break: break-word;
 }
-.markdown-content :deep(h1) { font-size: 1.6em; font-weight: 700; margin: 0.4em 0; border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 0.2em; }
-.markdown-content :deep(h2) { font-size: 1.35em; font-weight: 700; margin: 0.4em 0; }
-.markdown-content :deep(h3) { font-size: 1.15em; font-weight: 700; margin: 0.3em 0; }
-.markdown-content :deep(p) { margin: 0.3em 0; }
+.markdown-content :deep(h1) { font-size: 1.6em; font-weight: var(--type-font-bold); margin: 0.4em 0; border-bottom: 1px solid var(--type-hr-color); padding-bottom: 0.2em; }
+.markdown-content :deep(h2) { font-size: 1.35em; font-weight: var(--type-font-bold); margin: 0.4em 0; }
+.markdown-content :deep(h3) { font-size: 1.15em; font-weight: var(--type-font-bold); margin: 0.3em 0; }
+.markdown-content :deep(p) { margin: 0; }
 .markdown-content :deep(ul), .markdown-content :deep(ol) { padding-left: 1.5em; margin: 0.2em 0; }
-.markdown-content :deep(blockquote) { border-left: 3px solid var(--color-primary); padding: 0.1em 0.6em; margin: 0.4em 0; color: rgba(0,0,0,0.55); background: rgba(0,106,255,0.03); border-radius: 0 4px 4px 0; }
-.markdown-content :deep(code) { background: rgba(0,0,0,0.05); padding: 0.15em 0.35em; border-radius: 3px; font-size: 0.88em; font-family: 'SF Mono', 'Consolas', monospace; }
-.markdown-content :deep(pre) { background: rgba(0,0,0,0.03); padding: 12px 14px; border-radius: 8px; overflow-x: auto; }
+.markdown-content :deep(blockquote) { border-left: 3px solid var(--color-primary); padding: 0.1em 0.6em; margin: 0.4em 0; color: var(--type-blockquote-color); background: var(--type-blockquote-bg); border-radius: 0 4px 4px 0; }
+.markdown-content :deep(code) { background: var(--type-code-bg); padding: 0.15em 0.35em; border-radius: 3px; font-size: 0.88em; font-family: 'SF Mono', 'Consolas', monospace; }
+.markdown-content :deep(pre) { background: var(--type-pre-bg); padding: 12px 14px; border-radius: 8px; overflow-x: auto; }
 .markdown-content :deep(pre code) { background: none; padding: 0; }
-.markdown-content :deep(hr) { border: none; border-top: 1px solid rgba(0,0,0,0.08); margin: 1em 0; }
+.markdown-content :deep(hr) { border: none; border-top: 1px solid var(--type-hr-color); margin: 1em 0; }
 .markdown-content :deep(a) { color: var(--color-primary); }
 .markdown-content :deep(table) { border-collapse: collapse; width: 100%; }
-.markdown-content :deep(th), .markdown-content :deep(td) { border: 1px solid rgba(0,0,0,0.08); padding: 6px 10px; font-size: 0.9em; }
-.markdown-content :deep(th) { background: rgba(0,0,0,0.03); font-weight: 600; }
+.markdown-content :deep(th), .markdown-content :deep(td) { border: 1px solid var(--type-table-border-color); padding: 6px 10px; font-size: 0.9em; }
+.markdown-content :deep(th) { background: var(--type-pre-bg); font-weight: 600; }
 </style>

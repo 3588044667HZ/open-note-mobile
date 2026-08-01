@@ -4,6 +4,7 @@ import router from './router'
 import App from './App.vue'
 import './styles/main.css'
 import './styles/skin.css'
+import './styles/typography.css'
 
 const app = createApp(App)
 app.use(createPinia())

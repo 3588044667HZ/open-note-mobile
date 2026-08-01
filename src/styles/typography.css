@@ -1,0 +1,51 @@
+:root {
+  --type-content-size: 16px;
+  --type-title-size: 24px;
+  --type-content-line-height: calc(1em + 8px);
+  --type-title-line-height: 1.1;
+  --type-letter-spacing: 0;
+  --type-padding-horizontal: 24px;
+  --type-title-padding-top: 16px;
+  --type-title-padding-bottom: 14px;
+  --type-text-color: rgba(0, 0, 0, 0.9);
+  --type-font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --type-font-bold: 750;
+  --type-font-title-weight: 650;
+  --type-table-border-color: rgba(0, 0, 0, 0.12);
+  --type-placeholder-color: rgba(0, 0, 0, 0.2);
+  --type-blockquote-color: rgba(0, 0, 0, 0.55);
+  --type-blockquote-bg: rgba(0, 106, 255, 0.03);
+  --type-code-bg: rgba(0, 0, 0, 0.05);
+  --type-pre-bg: rgba(0, 0, 0, 0.03);
+  --type-hr-color: rgba(0, 0, 0, 0.08);
+  --type-toolbar-color: rgba(0, 0, 0, 0.45);
+  --type-toolbar-divider: rgba(0, 0, 0, 0.08);
+}
+
+[data-skin="black"] {
+  --type-text-color: rgba(255, 255, 255, 0.9);
+  --type-table-border-color: rgba(255, 255, 255, 0.2);
+  --type-placeholder-color: rgba(255, 255, 255, 0.2);
+  --type-blockquote-color: rgba(255, 255, 255, 0.55);
+  --type-blockquote-bg: rgba(255, 255, 255, 0.04);
+  --type-code-bg: rgba(255, 255, 255, 0.08);
+  --type-pre-bg: rgba(255, 255, 255, 0.06);
+  --type-hr-color: rgba(255, 255, 255, 0.1);
+  --type-toolbar-color: rgba(255, 255, 255, 0.45);
+  --type-toolbar-divider: rgba(255, 255, 255, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-skin="white"] {
+    --type-text-color: rgba(255, 255, 255, 0.9);
+    --type-table-border-color: rgba(255, 255, 255, 0.2);
+    --type-placeholder-color: rgba(255, 255, 255, 0.2);
+    --type-blockquote-color: rgba(255, 255, 255, 0.55);
+    --type-blockquote-bg: rgba(255, 255, 255, 0.04);
+    --type-code-bg: rgba(255, 255, 255, 0.08);
+    --type-pre-bg: rgba(255, 255, 255, 0.06);
+    --type-hr-color: rgba(255, 255, 255, 0.1);
+    --type-toolbar-color: rgba(255, 255, 255, 0.45);
+    --type-toolbar-divider: rgba(255, 255, 255, 0.1);
+  }
+}

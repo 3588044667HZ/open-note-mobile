@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="page editor-page" :style="{ backgroundColor: skinCloth }">
     <div class="color-accent" :style="{ backgroundColor: colorHex(form.color) }"></div>
 
@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="header-actions">
-        <SkinPicker class="skin-picker-inline" @select="selectSkin" @toggleEye="toggleEyeProtection"/>
+        <SkinPicker class="skin-picker-inline" @select="selectSkin" @toggleEye="toggleEyeProtection" @toggleDark="toggleDarkMode"/>
         <button class="action-btn share-btn" @click="handleShareImage" title="Share as image">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
@@ -38,12 +38,12 @@
         </button>
         <button class="action-btn" @click="handlePin" :title="form.isPinned ? 'Unpin' : 'Pin'">
           <svg width="16" height="16" viewBox="0 0 16 16" :fill="form.isPinned ? '#006aff' : 'none'"
-               :stroke="form.isPinned ? '#006aff' : 'rgba(0,0,0,0.35)'" stroke-width="1.3">
+               :stroke="form.isPinned ? '#006aff' : 'var(--color-icon)'" stroke-width="1.3">
             <path d="M10 2.5L13 5M3 12l2.5-5.5L1 4l2.5-1L7.5 6l5-1.5L14 6l-4 4-3.5 5.5L3 12z" stroke-linejoin="round"/>
           </svg>
         </button>
         <button class="action-btn" @click="handleDelete">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="rgba(0,0,0,0.35)" stroke-width="1.3">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--color-icon)" stroke-width="1.3">
             <path d="M3.5 4.5h9M5.5 4.5V3a.5.5 0 01.5-.5h4a.5.5 0 01.5.5v1.5" stroke-linecap="round"/>
             <rect x="4" y="4.5" width="8" height="8.5" rx="1"/>
           </svg>
@@ -81,22 +81,22 @@
 </template>
 
 <script setup>
-import {ref, reactive, watch, computed, onMounted, onUnmounted} from 'vue'
-import {useRouter, useRoute} from 'vue-router'
+import {computed, onMounted, onUnmounted, reactive, ref, watch} from 'vue'
+import {useRoute, useRouter} from 'vue-router'
 import {useNoteStore} from '../stores/note'
 import {getNote} from '../api'
 import TipTapEditor from '../components/TipTapEditor.vue'
 import SkinPicker from '../components/SkinPicker.vue'
 import ShareImageModal from '../components/ShareImageModal.vue'
 import {useSkin} from '../composables/useSkin'
-import {renderToImage, getSkinColorsFromCSS} from '../utils/share-image-renderer'
+import {getSkinColorsFromCSS, renderToImage} from '../utils/share-image-renderer'
 import {marked} from 'marked'
 import dayjs from 'dayjs'
 
 const router = useRouter()
 const route = useRoute()
 const store = useNoteStore()
-const {currentSkin, selectSkin, toggleEyeProtection, SKINS} = useSkin()
+const { currentSkin, selectSkin, toggleEyeProtection, toggleDarkMode, SKINS } = useSkin()
 
 const skinCloth = computed(() => SKINS[currentSkin.value] || '#FAFAFA')
 
@@ -243,14 +243,13 @@ async function handleShareImage() {
     const container = document.createElement('div')
     container.innerHTML = html
     const colors = getSkinColorsFromCSS()
-    const blob = await renderToImage(container, colors, {
+    shareBlob.value = await renderToImage(container, colors, {
       title: form.title.trim() || 'Untitled',
       watermark: 'Memo',
       logoText: 'Shared via OPEN Notes',
       width: 750,
       scale: 2,
     })
-    shareBlob.value = blob
   } catch (e) {
     shareError.value = 'Failed to generate image. Please try again.'
   } finally {
@@ -311,7 +310,7 @@ onUnmounted(() => {
 
 .meta-select {
   height: 28px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--color-border);
   border-radius: 6px;
   padding: 0 8px;
   font-size: 12px;
@@ -355,24 +354,27 @@ onUnmounted(() => {
 }
 
 .action-btn:active {
-  background: rgba(0, 0, 0, 0.06);
+  background: var(--type-toolbar-divider);
 }
 
 .share-btn {
-  color: rgba(0, 0, 0, 0.35);
+  color: var(--color-icon);
   transition: color 0.2s;
 }
 
+.save-btn { color: var(--color-icon); transition: color 0.2s; }
 .save-btn.dirty {
   color: var(--color-primary);
 }
 
 .title-input {
-  height: 52px;
-  padding: 0 16px;
-  font-size: 20px;
-  font-weight: 700;
-  color: #000;
+  min-height: 52px;
+  padding: var(--type-title-padding-top) var(--type-padding-horizontal) var(--type-title-padding-bottom);
+  font-family: var(--type-font-family);
+  font-size: var(--type-title-size);
+  font-weight: var(--type-font-title-weight);
+  line-height: var(--type-title-line-height);
+  color: var(--type-text-color);
   border: none;
   border-bottom: 1px solid var(--color-border);
   background: transparent;
@@ -380,7 +382,7 @@ onUnmounted(() => {
 }
 
 .title-input::placeholder {
-  color: rgba(0, 0, 0, 0.15);
+  color: var(--type-placeholder-color);
 }
 
 .editor-body {
