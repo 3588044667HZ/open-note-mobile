@@ -112,6 +112,10 @@ function htmlToMarkdown(html) {
 onBeforeUnmount(() => {
   editor.value?.destroy()
 })
+
+defineExpose({
+  focus: () => editor.value?.commands.focus(),
+})
 </script>
 
 <style scoped>

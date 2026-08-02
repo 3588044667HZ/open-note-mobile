@@ -136,3 +136,11 @@ export function permanentlyDeleteNote(id) {
 export function syncNotes(since) {
   return api.get('/notes/sync', { params: { since } })
 }
+
+export function getShareSettings() {
+  return api.get('/settings/share')
+}
+
+export function updateShareSettings(data) {
+  return api.put('/settings/share', data)
+}

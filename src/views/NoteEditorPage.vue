@@ -52,9 +52,9 @@
     </div>
 
     <input v-model="form.title" type="text" class="title-input" placeholder="Title" maxlength="100"
-           @input="dirty = true"/>
+           @input="dirty = true" @keydown.enter.prevent="focusContentEditor" />
 
-    <TipTapEditor v-model="form.content" class="editor-body" @update:model-value="dirty = true"/>
+    <TipTapEditor ref="editorRef" v-model="form.content" class="editor-body" @update:model-value="dirty = true" />
 
     <div v-if="hasConflict" class="conflict-banner">
       Note was modified on another device. Pull to refresh.
@@ -90,6 +90,7 @@ import SkinPicker from '../components/SkinPicker.vue'
 import ShareImageModal from '../components/ShareImageModal.vue'
 import {useSkin} from '../composables/useSkin'
 import {getSkinColorsFromCSS, renderToImage} from '../utils/share-image-renderer'
+import { getShareSettingsCached } from '../config/shareSettings'
 import {marked} from 'marked'
 import dayjs from 'dayjs'
 
@@ -107,6 +108,11 @@ const shareError = ref('')
 const shareBlob = ref(null)
 
 const note = ref(null)
+const editorRef = ref(null)
+
+function focusContentEditor() {
+  editorRef.value?.focus()
+}
 const dirty = ref(false)
 let saveTimer = null
 let hasConflict = ref(false)
@@ -243,10 +249,11 @@ async function handleShareImage() {
     const container = document.createElement('div')
     container.innerHTML = html
     const colors = getSkinColorsFromCSS()
+    const settings = getShareSettingsCached()
     shareBlob.value = await renderToImage(container, colors, {
       title: form.title.trim() || 'Untitled',
-      watermark: 'Memo',
-      logoText: 'Shared via OPEN Notes',
+      watermark: settings.watermark,
+      logoText: settings.logoText,
       width: 750,
       scale: 2,
     })

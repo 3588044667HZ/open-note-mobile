@@ -75,6 +75,20 @@
       </div>
 
       <div class="settings-section">
+        <div class="section-title">Share Image Footer</div>
+        <div class="settings-card">
+          <div class="setting-row">
+            <span class="setting-label-sm">署名</span>
+            <input v-model="shareForm.logoText" type="text" class="share-input" maxlength="30" @blur="handleShareSave" />
+          </div>
+          <div class="setting-row">
+            <span class="setting-label-sm">水印</span>
+            <input v-model="shareForm.watermark" type="text" class="share-input" maxlength="20" @blur="handleShareSave" />
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
         <div class="section-title">About</div>
         <div class="settings-card">
           <div class="setting-row">
@@ -94,11 +108,12 @@
 </template>
 
 <script setup>
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { useNoteStore } from '../stores/note'
 import { useSkin } from '../composables/useSkin'
+import { getShareSettings, saveShareSettings } from '../config/shareSettings'
 import dayjs from 'dayjs'
 
 const router = useRouter()
@@ -108,6 +123,13 @@ const { currentSkin, toggleEyeProtection, toggleDarkMode } = useSkin()
 const showAddNB = ref(false)
 const newNBName = ref('')
 const nbInputRef = ref(null)
+const shareForm = reactive({ logoText: '', watermark: '' })
+
+onMounted(async () => {
+  const settings = await getShareSettings()
+  shareForm.logoText = settings.logoText
+  shareForm.watermark = settings.watermark
+})
 
 function formatDate(d) {
   if (!d) return '---'
@@ -116,6 +138,10 @@ function formatDate(d) {
 
 function handleToggleDark() {
   toggleDarkMode()
+}
+
+async function handleShareSave() {
+  await saveShareSettings({ logoText: shareForm.logoText, watermark: shareForm.watermark })
 }
 
 async function handleAddNotebook() {
@@ -215,6 +241,24 @@ async function handleLogout() {
 .setting-value {
   font-size: 14px;
   color: var(--color-text-secondary);
+}
+
+.setting-label-sm {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  width: 48px;
+  flex-shrink: 0;
+}
+
+.share-input {
+  flex: 1;
+  height: 32px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 0 10px;
+  font-size: 14px;
+  color: var(--color-text);
+  background: transparent;
 }
 
 .nb-color {
