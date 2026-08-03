@@ -1,5 +1,6 @@
 # open-note-mobile 开源轻量化便签手机版
 ** 需配合后端使用 见 https://github.com/3588044667HZ/open-note-server **
+
 和电脑版功能完全一致，只是布局改变。
 
 <img width="650" height="835" alt="image" src="https://github.com/user-attachments/assets/e0e2d905-4d21-4fc3-b938-7efa32369a82" />
