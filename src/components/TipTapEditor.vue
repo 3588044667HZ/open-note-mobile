@@ -25,7 +25,12 @@
               @click="editor.chain().focus().toggleBlockquote().run()" title="Quote">&ldquo;</button>
       <button class="tt-btn" :class="{ active: editor.isActive('codeBlock') }"
               @click="editor.chain().focus().toggleCodeBlock().run()" title="Code block">&lt;/&gt;</button>
-      <button class="tt-btn" @click="setLink" title="Link">A</button>
+      <button class="tt-btn" :class="{ active: editor.isActive('link') }" @click="setLink" title="Link">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+          <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z" stroke-width="1.2"/>
+          <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z" stroke-width="1.2"/>
+        </svg>
+      </button>
       <button class="tt-btn" @click="editor.chain().focus().setHorizontalRule().run()" title="Divider">-</button>
       <span class="tt-spacer"></span>
 
@@ -33,20 +38,6 @@
         <button class="tt-btn color-trigger" :class="{ active: colorOpen }" @click="colorOpen = !colorOpen">
           <span class="color-swatch" :style="currentSwatchStyle"></span>A
         </button>
-        <div v-if="colorOpen" class="color-picker-dropdown">
-          <div class="color-tabs">
-            <button v-for="tab in COLOR_TABS" :key="tab"
-                    class="color-tab" :class="{ active: store.activeTab === tab }"
-                    @click="store.activeTab = tab">{{ COLOR_TAB_LABELS[tab] }}</button>
-          </div>
-          <div class="color-options">
-            <button v-for="item in colorOptions" :key="item.class"
-                    class="color-option"
-                    :class="{ active: store.activeFormat === item.class }"
-                    :style="item.style"
-                    @click="store.applyFormat(item.class, store.activeTab)">{{ item.label }}</button>
-          </div>
-        </div>
       </div>
 
       <span class="tt-spacer"></span>
@@ -78,6 +69,30 @@
       <div class="sm-spinner"></div>
       <span>Uploading image...</span>
     </div>
+
+    <Teleport to="body">
+      <div v-if="colorOpen" class="color-sheet-overlay" @click="colorOpen = false">
+        <div class="color-sheet" @click.stop>
+          <div class="color-sheet-handle"></div>
+          <div class="color-sheet-header">
+            <span class="sheet-title">Text Format</span>
+            <button class="sheet-close" @click="colorOpen = false">&times;</button>
+          </div>
+          <div class="color-tabs">
+            <button v-for="tab in COLOR_TABS" :key="tab"
+                    class="color-tab" :class="{ active: store.activeTab === tab }"
+                    @click="store.activeTab = tab">{{ COLOR_TAB_LABELS[tab] }}</button>
+          </div>
+          <div class="color-options">
+            <button v-for="item in colorOptions" :key="item.class"
+                    class="color-option"
+                    :class="{ active: store.activeFormat === item.class }"
+                    :style="item.style"
+                    @click="store.applyFormat(item.class, store.activeTab)">{{ item.label }}</button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </div>
 </template>
 
@@ -303,62 +318,119 @@ defineExpose({
   border-radius: 1px;
 }
 
-.color-picker-dropdown {
-  position: absolute;
-  top: 34px;
-  left: 0;
-  background: var(--color-white);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
-  z-index: 50;
-  min-width: 190px;
-  padding: 4px;
+.color-sheet-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
+
+.color-sheet {
+  width: 100%;
+  max-width: 480px;
+  background: var(--color-white);
+  border-radius: 18px 18px 0 0;
+  padding: 8px 16px calc(16px + var(--safe-area-bottom));
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.15);
+  animation: sheet-up 0.25s ease;
+}
+
+@keyframes sheet-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.color-sheet-handle {
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-border);
+  margin: 0 auto 10px;
+}
+
+.color-sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0 10px;
+}
+
+.sheet-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.sheet-close {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  font-size: 18px;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sheet-close:active { background: var(--type-toolbar-divider); }
 
 .color-tabs {
   display: flex;
   gap: 0;
-  border-bottom: 1px solid var(--color-border);
-  padding: 2px;
+  background: var(--color-bg);
+  border-radius: 10px;
+  padding: 3px;
+  margin-bottom: 14px;
 }
 
 .color-tab {
   flex: 1;
-  height: 26px;
-  border-radius: 6px;
-  font-size: 11px;
+  height: 36px;
+  border-radius: 8px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--color-text-secondary);
 }
 
 .color-tab.active {
-  background: var(--color-primary);
-  color: #fff;
+  background: var(--color-white);
+  color: var(--color-primary);
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 
 .color-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  padding: 6px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding-bottom: 4px;
 }
 
 .color-option {
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  font-size: 10px;
+  height: 52px;
+  border-radius: 10px;
+  font-size: 13px;
   font-weight: 600;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 2px;
   border: 2px solid transparent;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, transform 0.15s;
+  color: var(--color-text);
+}
+
+.color-option:active {
+  transform: scale(0.95);
 }
 
 .color-option.active {
   border-color: var(--color-primary);
+  background: rgba(0, 106, 255, 0.05);
 }
 
 .tt-img-btn {

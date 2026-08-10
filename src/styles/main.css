@@ -134,9 +134,9 @@ button {
 .ProseMirror .highlight_blue   { background-color: var(--highlight-blue); }
 .ProseMirror .highlight_green  { background-color: var(--highlight-green); }
 
-.ProseMirror .underline_wavy_color_red { padding-bottom: 4px; text-decoration: none; }
-.ProseMirror .underline_wavy_color_orange { padding-bottom: 4px; text-decoration: none; }
-.ProseMirror .underline_wavy_color_green { padding-bottom: 4px; text-decoration: none; }
-.ProseMirror .underline_wavy_color_blue { padding-bottom: 4px; text-decoration: none; }
-.ProseMirror .underline_wavy_color_gray { padding-bottom: 4px; text-decoration: none; }
+.ProseMirror .underline_wavy_red { padding-bottom: 4px; text-decoration: none; }
+.ProseMirror .underline_wavy_orange { padding-bottom: 4px; text-decoration: none; }
+.ProseMirror .underline_wavy_green { padding-bottom: 4px; text-decoration: none; }
+.ProseMirror .underline_wavy_blue { padding-bottom: 4px; text-decoration: none; }
+.ProseMirror .underline_wavy_gray { padding-bottom: 4px; text-decoration: none; }
 .ProseMirror .underline_wavy_default { padding-bottom: 4px; text-decoration: none; }
