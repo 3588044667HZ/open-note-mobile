@@ -85,6 +85,19 @@
             <span class="setting-label-sm">水印</span>
             <input v-model="shareForm.watermark" type="text" class="share-input" maxlength="20" @blur="handleShareSave" />
           </div>
+          <div class="setting-row setting-row-actions">
+            <span class="share-sync-status" :class="shareSyncStatus">{{ shareSyncLabel }}</span>
+            <button class="share-sync-btn" @click="handleShareSync" :disabled="shareSyncing">
+              <svg v-if="shareSyncing" width="14" height="14" viewBox="0 0 16 16" class="animate-spin">
+                <circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="30 10"/>
+              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
+                <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
+              </svg>
+              {{ shareSyncing ? 'Syncing...' : 'Sync to Server' }}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -108,7 +121,7 @@
 </template>
 
 <script setup>
-import { ref, nextTick, reactive, onMounted } from 'vue'
+import { ref, nextTick, reactive, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { useNoteStore } from '../stores/note'
@@ -124,6 +137,12 @@ const showAddNB = ref(false)
 const newNBName = ref('')
 const nbInputRef = ref(null)
 const shareForm = reactive({ logoText: '', watermark: '' })
+const shareSyncing = ref(false)
+const shareSyncStatus = ref('idle')
+
+const shareSyncLabelMap = { idle: '', syncing: 'Syncing...', done: 'Synced', fail: 'Network error' }
+
+const shareSyncLabel = computed(() => shareSyncLabelMap[shareSyncStatus.value] || '')
 
 onMounted(async () => {
   const settings = await getShareSettings()
@@ -141,7 +160,23 @@ function handleToggleDark() {
 }
 
 async function handleShareSave() {
-  await saveShareSettings({ logoText: shareForm.logoText, watermark: shareForm.watermark })
+  const result = await saveShareSettings({ logoText: shareForm.logoText, watermark: shareForm.watermark })
+  shareSyncStatus.value = result ? 'done' : 'fail'
+  if (!result) setTimeout(() => { shareSyncStatus.value = 'idle' }, 2000)
+}
+
+async function handleShareSync() {
+  shareSyncing.value = true
+  shareSyncStatus.value = 'syncing'
+  try {
+    await saveShareSettings({ logoText: shareForm.logoText, watermark: shareForm.watermark })
+    shareSyncStatus.value = 'done'
+  } catch {
+    shareSyncStatus.value = 'fail'
+  } finally {
+    shareSyncing.value = false
+    setTimeout(() => { shareSyncStatus.value = 'idle' }, 2000)
+  }
 }
 
 async function handleAddNotebook() {
@@ -259,6 +294,39 @@ async function handleLogout() {
   font-size: 14px;
   color: var(--color-text);
   background: transparent;
+}
+
+.setting-row-actions {
+  justify-content: flex-end;
+}
+
+.share-sync-status {
+  font-size: 12px;
+  margin-right: 8px;
+}
+.share-sync-status.done { color: var(--color-green); }
+.share-sync-status.fail { color: var(--color-danger); }
+
+.share-sync-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-primary);
+  background: rgba(0, 106, 255, 0.08);
+  transition: opacity 0.15s;
+  white-space: nowrap;
+}
+
+.share-sync-btn:disabled {
+  opacity: 0.6;
+}
+
+.share-sync-btn:active:not(:disabled) {
+  background: rgba(0, 106, 255, 0.15);
 }
 
 .nb-color {

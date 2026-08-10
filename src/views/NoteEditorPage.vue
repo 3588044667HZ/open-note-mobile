@@ -14,40 +14,59 @@
           <option :value="null">No notebook</option>
           <option v-for="nb in store.notebooks" :key="nb.id" :value="nb.id">{{ nb.name }}</option>
         </select>
-        <div class="color-dots">
-          <button v-for="c in colors" :key="c.value" class="cd" :class="{ active: form.color === c.value }"
-                  :style="{ backgroundColor: c.hex }" @click="form.color = c.value; dirty = true"></button>
-        </div>
       </div>
       <div class="header-actions">
-        <SkinPicker class="skin-picker-inline" @select="selectSkin" @toggleEye="toggleEyeProtection" @toggleDark="toggleDarkMode"/>
-        <button class="action-btn share-btn" @click="handleShareImage" title="Share as image">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-               class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
-            <path fill-rule="evenodd"
-                  d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"/>
-            <path fill-rule="evenodd"
-                  d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"/>
-          </svg>
-        </button>
+        <SkinPicker compact class="skin-picker-inline" @select="selectSkin" @toggleEye="toggleEyeProtection" @toggleDark="toggleDarkMode"/>
         <button class="action-btn save-btn" @click="handleSave" :class="{ dirty: dirty }" title="Save">
           <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
             <path
                 d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
           </svg>
         </button>
-        <button class="action-btn" @click="handlePin" :title="form.isPinned ? 'Unpin' : 'Pin'">
-          <svg width="16" height="16" viewBox="0 0 16 16" :fill="form.isPinned ? '#006aff' : 'none'"
-               :stroke="form.isPinned ? '#006aff' : 'var(--color-icon)'" stroke-width="1.3">
-            <path d="M10 2.5L13 5M3 12l2.5-5.5L1 4l2.5-1L7.5 6l5-1.5L14 6l-4 4-3.5 5.5L3 12z" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <button class="action-btn" @click="handleDelete">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--color-icon)" stroke-width="1.3">
-            <path d="M3.5 4.5h9M5.5 4.5V3a.5.5 0 01.5-.5h4a.5.5 0 01.5.5v1.5" stroke-linecap="round"/>
-            <rect x="4" y="4.5" width="8" height="8.5" rx="1"/>
-          </svg>
-        </button>
+        <div class="more-menu-wrapper" ref="moreMenuRef">
+          <button class="action-btn more-btn" @click="menuOpen = !menuOpen" title="More">
+            <svg width="18" height="18" viewBox="0 0 16 16" fill="var(--color-icon)">
+              <circle cx="4" cy="3" r="1.3"/>
+              <circle cx="4" cy="8" r="1.3"/>
+              <circle cx="4" cy="13" r="1.3"/>
+            </svg>
+          </button>
+          <Teleport to="body">
+            <div v-if="menuOpen" class="more-menu-overlay" @click="menuOpen = false"></div>
+          </Teleport>
+          <div v-if="menuOpen" class="more-menu-dropdown">
+            <div class="menu-section">
+              <span class="menu-label">Color</span>
+              <div class="menu-color-dots">
+                <button v-for="c in colors" :key="c.value" class="menu-cd" :class="{ active: form.color === c.value }"
+                        :style="{ backgroundColor: c.hex }" @click="form.color = c.value; dirty = true"></button>
+              </div>
+            </div>
+            <div class="menu-divider"></div>
+            <button class="menu-item" @click="handleShareClick">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--color-icon)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="4.5" width="12" height="10" rx="1.5"/>
+                <path d="M8 4.5V1.5M5 3l3-1.5L11 3"/>
+              </svg>
+              <span>Share as Image</span>
+            </button>
+            <button class="menu-item" @click="handlePinClick">
+              <svg width="16" height="16" viewBox="0 0 16 16" :fill="form.isPinned ? '#006aff' : 'none'"
+                   :stroke="form.isPinned ? '#006aff' : 'var(--color-icon)'" stroke-width="1.3">
+                <path d="M10 2.5L13 5M3 12l2.5-5.5L1 4l2.5-1L7.5 6l5-1.5L14 6l-4 4-3.5 5.5L3 12z" stroke-linejoin="round"/>
+              </svg>
+              <span>{{ form.isPinned ? 'Unpin' : 'Pin to Top' }}</span>
+            </button>
+            <div class="menu-divider"></div>
+            <button class="menu-item menu-item-danger" @click="handleDeleteClick">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--color-danger)" stroke-width="1.3">
+                <path d="M3.5 4.5h9M5.5 4.5V3a.5.5 0 01.5-.5h4a.5.5 0 01.5.5v1.5" stroke-linecap="round"/>
+                <rect x="4" y="4.5" width="8" height="8.5" rx="1"/>
+              </svg>
+              <span>Delete</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -61,7 +80,7 @@
     </div>
 
     <div class="editor-footer">
-      <span class="char-hint" v-if="note">{{ form.content.length }}/10000</span>
+      <span class="char-hint" v-if="note">{{ plainLength }}/10000</span>
       <span v-if="dirty" class="unsaved">Unsaved</span>
       <span class="time-label">{{ timeLabel }}</span>
     </div>
@@ -69,13 +88,13 @@
     <div ref="shareSource" style="display:none;" data-share-content></div>
 
     <ShareImageModal
-        :visible="showShareModal"
-        :loading="shareLoading"
-        :error="shareError"
-        :blob="shareBlob"
-        :title="form.title"
-        @close="showShareModal = false"
-        @retry="handleShareImage"
+      :visible="showShareModal"
+      :loading="shareLoading"
+      :error="shareError"
+      :blob="shareBlob"
+      :title="form.title"
+      @close="showShareModal = false"
+      @retry="handleShareImage"
     />
   </div>
 </template>
@@ -88,10 +107,9 @@ import {getNote} from '../api'
 import TipTapEditor from '../components/TipTapEditor.vue'
 import SkinPicker from '../components/SkinPicker.vue'
 import ShareImageModal from '../components/ShareImageModal.vue'
-import {useSkin} from '../composables/useSkin'
-import {getSkinColorsFromCSS, renderToImage} from '../utils/share-image-renderer'
+import { useSkin } from '../composables/useSkin'
+import { getSkinColorsFromCSS, renderToImage } from '../utils/share-image-renderer'
 import { getShareSettingsCached } from '../config/shareSettings'
-import {marked} from 'marked'
 import dayjs from 'dayjs'
 
 const router = useRouter()
@@ -109,6 +127,7 @@ const shareBlob = ref(null)
 
 const note = ref(null)
 const editorRef = ref(null)
+const menuOpen = ref(false)
 
 function focusContentEditor() {
   editorRef.value?.focus()
@@ -145,6 +164,10 @@ const form = reactive({title: '', content: '', notebookId: null, color: 'blue', 
 const timeLabel = computed(() => {
   if (!note.value?.updatedAt) return ''
   return dayjs(note.value.updatedAt).format('YYYY/MM/DD HH:mm')
+})
+
+const plainLength = computed(() => {
+  return (form.content || '').replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').length
 })
 
 async function loadNote() {
@@ -226,6 +249,10 @@ async function handlePin() {
   form.isPinned = updated.isPinned
 }
 
+function handlePinClick() { menuOpen.value = false; handlePin() }
+function handleShareClick() { menuOpen.value = false; handleShareImage() }
+function handleDeleteClick() { menuOpen.value = false; handleDelete() }
+
 async function handleSave() {
   clearTimeout(saveTimer)
   await autoSave(true)
@@ -245,7 +272,7 @@ async function handleShareImage() {
   shareBlob.value = null
 
   try {
-    const html = form.content ? marked.parse(form.content) : ''
+    const html = form.content || ''
     const container = document.createElement('div')
     container.innerHTML = html
     const colors = getSkinColorsFromCSS()
@@ -367,6 +394,96 @@ onUnmounted(() => {
 .share-btn {
   color: var(--color-icon);
   transition: color 0.2s;
+}
+
+.save-btn { color: var(--color-icon); transition: color 0.2s; }
+.save-btn.dirty {
+  color: var(--color-primary);
+}
+
+.more-btn {
+  color: var(--color-icon);
+}
+
+.more-menu-wrapper {
+  position: relative;
+}
+
+.more-menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 149;
+}
+
+.more-menu-dropdown {
+  position: absolute;
+  top: 38px;
+  right: 0;
+  width: 200px;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  padding: 4px;
+  z-index: 150;
+}
+
+.menu-section {
+  padding: 8px 12px 4px;
+}
+
+.menu-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.menu-color-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.menu-cd {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  transition: all 0.15s;
+}
+
+.menu-cd.active {
+  border-color: var(--color-primary);
+  transform: scale(1.1);
+  box-shadow: 0 0 0 2px rgba(0, 106, 255, 0.2);
+}
+
+.menu-divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: 4px 8px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  color: var(--color-text);
+  transition: background 0.15s;
+}
+
+.menu-item:active {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.menu-item-danger {
+  color: var(--color-danger);
 }
 
 .save-btn { color: var(--color-icon); transition: color 0.2s; }
