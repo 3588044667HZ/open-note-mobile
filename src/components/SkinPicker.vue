@@ -1,15 +1,17 @@
 ﻿<template>
-  <div class="skin-picker-panel">
-    <button
-      v-for="id in visibleSkins"
-      :key="id"
-      class="skin-dot"
-      :class="{ active: currentSkin === id }"
-      :style="{ backgroundColor: SKINS[id] }"
-      :title="SKIN_LABELS[id]"
-      @click="$emit('select', id)"
-    />
-    <span class="skin-spacer"></span>
+  <div class="skin-picker-panel" :class="{ compact: compact }">
+    <template v-if="!compact">
+      <button
+        v-for="id in visibleSkins"
+        :key="id"
+        class="skin-dot"
+        :class="{ active: currentSkin === id }"
+        :style="{ backgroundColor: SKINS[id] }"
+        :title="SKIN_LABELS[id]"
+        @click="$emit('select', id)"
+      />
+      <span class="skin-spacer"></span>
+    </template>
     <button
       class="dark-toggle"
       :class="{ active: currentSkin === 'black' }"
@@ -42,6 +44,10 @@
 import { computed } from 'vue'
 import { SKIN_ORDER, SKIN_LABELS, SKINS, useSkin } from '../composables/useSkin'
 
+const props = defineProps({
+  compact: { type: Boolean, default: false },
+})
+
 defineEmits(['select', 'toggleEye', 'toggleDark'])
 
 const { currentSkin } = useSkin()
@@ -50,11 +56,46 @@ const visibleSkins = computed(() => SKIN_ORDER.filter(id => id !== 'black'))
 </script>
 
 <style scoped>
+.skin-picker-panel {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.skin-picker-panel.compact {
+  gap: 0;
+}
+
 .skin-spacer {
   width: 1px;
   height: 16px;
   background: var(--type-toolbar-divider);
   margin: 0 4px;
+}
+
+.skin-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.skin-dot:active {
+  transform: scale(1.15);
+}
+
+.skin-dot.active {
+  border-color: var(--color-text);
+  transform: scale(1.15);
+}
+
+@media (prefers-color-scheme: dark) {
+  .skin-dot.active {
+    border-color: #fff;
+  }
 }
 
 .eye-toggle,

@@ -144,3 +144,13 @@ export function getShareSettings() {
 export function updateShareSettings(data) {
   return api.put('/settings/share', data)
 }
+
+export function uploadFile(file, noteId) {
+  const formData = new FormData()
+  formData.append('file', file)
+  if (noteId) formData.append('noteId', noteId)
+  return api.post('/files/upload', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+    timeout: 60000,
+  })
+}

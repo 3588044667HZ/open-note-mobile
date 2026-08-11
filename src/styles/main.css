@@ -121,3 +121,22 @@ button {
 .animate-spin {
   animation: spin 1s linear infinite;
 }
+
+.ProseMirror .color_red    { color: var(--color-red); }
+.ProseMirror .color_orange { color: var(--color-orange); }
+.ProseMirror .color_yellow { color: var(--color-yellow); }
+.ProseMirror .color_green  { color: var(--color-green); }
+.ProseMirror .color_blue   { color: var(--color-blue); }
+.ProseMirror .color_gray   { color: var(--color-gray); }
+
+.ProseMirror .highlight_yellow { background-color: var(--highlight-yellow); }
+.ProseMirror .highlight_red    { background-color: var(--highlight-red); }
+.ProseMirror .highlight_blue   { background-color: var(--highlight-blue); }
+.ProseMirror .highlight_green  { background-color: var(--highlight-green); }
+
+.ProseMirror .underline_wavy_red { padding-bottom: 4px; text-decoration: none; }
+.ProseMirror .underline_wavy_orange { padding-bottom: 4px; text-decoration: none; }
+.ProseMirror .underline_wavy_green { padding-bottom: 4px; text-decoration: none; }
+.ProseMirror .underline_wavy_blue { padding-bottom: 4px; text-decoration: none; }
+.ProseMirror .underline_wavy_gray { padding-bottom: 4px; text-decoration: none; }
+.ProseMirror .underline_wavy_default { padding-bottom: 4px; text-decoration: none; }

@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import { applyColorTokens } from '../config/colorTokens'
 
 const SKINS = {
   white: '#FFFFFF',
@@ -46,6 +47,7 @@ function applySkin(id) {
   document.documentElement.setAttribute('data-skin', id)
   currentSkin.value = id
   try { localStorage.setItem(STORAGE_KEY, id) } catch {}
+  applyColorTokens()
 }
 
 function selectSkin(id) {

@@ -108,7 +108,8 @@ function colorHex(c) { return colorMap[c] || '#4A90D9' }
 
 function stripMD(content) {
   if (!content) return ''
-  return content.replace(/^#{1,6}\s+/gm, '').replace(/\*\*(.+?)\*\*/g, '$1')
+  return content.replace(/<[^>]+>/g, '')
+    .replace(/^#{1,6}\s+/gm, '').replace(/\*\*(.+?)\*\*/g, '$1')
     .replace(/\*(.+?)\*/g, '$1').replace(/~~(.+?)~~/g, '$1')
     .replace(/`(.+?)`/g, '$1').replace(/\[(.+?)]\(.+?\)/g, '$1')
     .replace(/^>\s+/gm, '').replace(/^- /gm, '').replace(/^\d+\. /gm, '')
