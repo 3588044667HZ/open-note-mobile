@@ -211,9 +211,10 @@ async function handleLogout() {
 }
 
 .settings-card {
-  background: var(--color-white);
+  background: var(--skin-card-bg);
   border-radius: 12px;
   overflow: hidden;
+  transition: background-color 0.4s ease;
 }
 
 .setting-row {

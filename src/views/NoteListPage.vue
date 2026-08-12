@@ -187,21 +187,23 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: var(--color-white);
+  background: var(--skin-card-bg);
   border-radius: 10px;
   padding: 10px 14px;
   margin-bottom: 10px;
   color: var(--color-text-tertiary);
   font-size: 15px;
   cursor: pointer;
+  transition: background-color 0.4s ease;
 }
 
 .search-overlay {
   position: fixed;
   inset: 0;
-  background: var(--color-white);
+  background: var(--skin-content-bg);
   z-index: 200;
   padding: 0 16px;
+  transition: background-color 0.4s ease;
 }
 
 .search-header {
@@ -243,8 +245,9 @@ onMounted(async () => {
   border-radius: 8px;
   padding: 0 10px;
   font-size: 13px;
-  background: var(--color-white);
+  background: var(--skin-card-bg);
   color: var(--color-text-secondary);
+  transition: background-color 0.4s ease;
 }
 
 .filter-select { flex: 1; }
@@ -287,11 +290,11 @@ onMounted(async () => {
 
 .note-card {
   display: flex;
-  background: var(--color-white);
+  background: var(--skin-card-bg);
   border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.15s;
+  transition: transform 0.15s, background-color 0.4s ease;
 }
 
 .note-card:active {
