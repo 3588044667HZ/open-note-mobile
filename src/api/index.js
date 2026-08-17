@@ -154,3 +154,18 @@ export function uploadFile(file, noteId) {
     timeout: 60000,
   })
 }
+
+export function registerAttachment(data) {
+  return api.post('/attachments', data)
+}
+
+export function uploadAttachmentFile(attachId, file) {
+  return api.put(`/attachments/${attachId}/file`, file, {
+    headers: { 'Content-Type': file.type || 'application/octet-stream' },
+    timeout: 60000,
+  })
+}
+
+export function deleteAttachment(attachId) {
+  return api.delete(`/attachments/${attachId}`)
+}

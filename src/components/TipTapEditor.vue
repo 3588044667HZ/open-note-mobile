@@ -108,7 +108,10 @@ import { ColoredUnderline } from '../extensions/underline'
 import { FormatCommands } from '../extensions/formatCommands'
 import { useEditorStore } from '../composables/useEditorStore'
 import { applyColorTokens, COLOR_CATEGORIES, COLOR_TABS, COLOR_TAB_LABELS } from '../config/colorTokens'
-import { uploadFile } from '../api'
+import {
+  generateAttachId, thumbUrl, registerAttachmentSlot, uploadPending,
+  storePendingFile, enqueuePendingUpload, retryPendingUploads,
+} from '../config/attachmentUpload'
 import { marked } from 'marked'
 
 const props = defineProps({
@@ -205,10 +208,23 @@ async function onFileSelected(e) {
   const file = e.target.files?.[0]
   if (!file) return
   uploading.value = true
+  const attachId = generateAttachId()
   try {
-    const res = await uploadFile(file)
-    const url = res.data?.url || `/api/attachments/${res.data?.fileId}/download`
-    editor.value?.chain().focus().setImage({ src: url, alt: file.name }).run()
+    // ① 注册槽位（失败不阻塞插图：content URL 是确定性 thumb 地址）
+    try {
+      await registerAttachmentSlot(attachId, file, null)
+    } catch {}
+
+    // ② 立即插入压缩图地址（不依赖注册回执）
+    editor.value?.chain().focus().setImage({ src: thumbUrl(attachId), alt: file.name }).run()
+
+    // ③ 补传文件内容；失败则存入待传队列
+    try {
+      await uploadPending(attachId, file)
+    } catch {
+      await storePendingFile(attachId, file)
+      enqueuePendingUpload(attachId, file.name, file.type)
+    }
   } catch {
     // silently fail
   } finally {
@@ -219,6 +235,7 @@ async function onFileSelected(e) {
 
 onMounted(() => {
   applyColorTokens()
+  retryPendingUploads()
 })
 
 onBeforeUnmount(() => {
